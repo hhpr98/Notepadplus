@@ -14,8 +14,7 @@ namespace NotepadPlus
     {
         private TextBox txt;
         private Panel pn;
-        private Label lbLn;
-        private Label lbCol;
+        private Label lbLn, lbCol, lblFont;
         private bool isSaved = false;
         private int ln = 1;
         private int col = 1;
@@ -29,11 +28,12 @@ namespace NotepadPlus
             txt.AutoSize = false;
             int sz1 = this.Size.Width;
             int sz2 = this.Size.Height;
-            txt.Size = new Size(sz1, sz2 - 24 - 65); // 65 là phần info (footer) dưới cùng
+            txt.Size = new Size(sz1 - 15, sz2 - 24 - 65); // 65 là phần info (footer) dưới cùng
             txt.Location = new Point(0, 24);
             txt.Multiline = true;
             txt.Font = new Font("Time New Roman", 11F, FontStyle.Regular);
             txt.BorderStyle = BorderStyle.None;
+            txt.ScrollBars = ScrollBars.Vertical;
             this.Controls.Add(txt);
 
             // add a panel to footer
@@ -57,12 +57,16 @@ namespace NotepadPlus
             lbCol.Size = new Size(100, 25);
             pn.Controls.Add(lbCol);
 
-
+            lblFont = new Label();
+            lblFont.Text = "Col : " + col.ToString();
+            lblFont.Font = new Font("Arial", 11F, FontStyle.Regular);
+            lblFont.Location = new Point(sz1 - 100, 5); // location theo panel
+            lblFont.Size = new Size(100, 25);
+            pn.Controls.Add(lblFont);
 
             // add event
             this.SizeChanged += MainForm_SizeChanged;
             txt.TextChanged += Txt_TextChanged;
-            // ???? // event scroll bar
         }
 
         #region event
@@ -72,25 +76,31 @@ namespace NotepadPlus
             ln = txt.Lines.Length;
             if (ln == 0)
             {
-                lbLn.Text = "Ln : 1";
-                lbCol.Text = "Col : 1";
+                setLineColText(1, 1);
                 return;
             }
-            lbLn.Text = "Ln : " + ln.ToString();
             col = txt.Lines[ln-1].Length + 1;
-            lbCol.Text = "Col : " + col.ToString();
+            setLineColText(ln, col);
         }
 
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             int sz1 = this.Size.Width;
             int sz2 = this.Size.Height;
-            txt.Size = new Size(sz1, sz2 - 24 - 65);
+            txt.Size = new Size(sz1 - 15, sz2 - 24 - 65);
             pn.Size = new Size(sz1, 30);
             pn.Location = new Point(0, sz2 - 65);
             lbLn.Location = new Point(sz1 - 200, 5);
             lbCol.Location = new Point(sz1 - 100, 5);
 
+        }
+        #endregion
+
+        #region function
+        private void setLineColText(int line,int column)
+        {
+            lbLn.Text = "Ln : " + line.ToString();
+            lbCol.Text = "Col : " + column.ToString();
         }
         #endregion
     }
