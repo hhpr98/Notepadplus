@@ -12,6 +12,7 @@ namespace NotepadPlus
 {
     public partial class MainForm : Form
     {
+        #region Load
         private TextBox txt;
         private Panel pn;
         private Label lbLn, lbCol, lblFont;
@@ -58,16 +59,18 @@ namespace NotepadPlus
             pn.Controls.Add(lbCol);
 
             lblFont = new Label();
-            lblFont.Text = "Windows(CRFL)  UTF-8";
+            lblFont.Text = "100% Windows(CRFL)  UTF-8";
             lblFont.Font = new Font("Arial", 11F, FontStyle.Regular);
-            lblFont.Location = new Point(sz1 - 350, 5); // location theo panel
-            lblFont.Size = new Size(200, 25);
+            lblFont.Location = new Point(sz1 - 400, 5); // location theo panel
+            lblFont.Size = new Size(250, 25);
             pn.Controls.Add(lblFont);
 
             // add event
             this.SizeChanged += MainForm_SizeChanged;
             txt.TextChanged += Txt_TextChanged;
         }
+
+        #endregion
 
         #region event
         private void Txt_TextChanged(object sender, EventArgs e)
@@ -83,8 +86,6 @@ namespace NotepadPlus
             setLineColText(ln, col);
         }
 
-        
-
         private void MainForm_SizeChanged(object sender, EventArgs e)
         {
             int sz1 = this.Size.Width;
@@ -94,7 +95,7 @@ namespace NotepadPlus
             pn.Location = new Point(0, sz2 - 65);
             lbLn.Location = new Point(sz1 - 150, 5);
             lbCol.Location = new Point(sz1 - 100, 5);
-            lblFont.Location = new Point(sz1 - 350, 5);
+            lblFont.Location = new Point(sz1 - 400, 5);
         }
         #endregion
 
@@ -103,6 +104,43 @@ namespace NotepadPlus
         {
             lbLn.Text = "Ln : " + line.ToString();
             lbCol.Text = "Col : " + column.ToString();
+        }
+        #endregion
+
+        #region Tùy chọn
+        private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+        #endregion
+
+        #region Chỉnh sửa
+        #endregion
+
+        #region Định dạng
+        #endregion
+
+        #region View
+        #endregion
+
+        #region Trợ giúp
+        private void viewHelpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"https://github.com/hhpr98/Notepadplus");
+        }
+
+        private void gửiPhảnHồiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(@"https://github.com/hhpr98/Notepadplus/issues");
+        }
+
+        private void vềNotepadPlusToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var title = "Thông báo";
+            var message = "NotepadPlus v1.0 by Nguyễn Hữu Hòa.\nKhoa CNTT, trường Đại học KHTN HCM\nRelease : DD/MM/YYYY";
+            var button = MessageBoxButtons.OK;
+            var icon = MessageBoxIcon.Information;
+            MessageBox.Show(message, title, button, icon);
         }
         #endregion
     }
