@@ -18,6 +18,7 @@ namespace NotepadPlus
         private Panel pn;
         private Label lbLn, lbCol, lblFont;
         private bool isSaved = true;
+        private bool isOpeningFile = false;
         private string textFileName = "Chưa có tên file";
         private const string textTitleName = "* - Notepad Plus v1.0";
         private const string textTitleNameNotStar = " - Notepad Plus v1.0";
@@ -80,11 +81,19 @@ namespace NotepadPlus
         private void Txt_TextChanged(object sender, EventArgs e)
         {
             // is Save changed
-            isSaved = (isSaved == true ? false : true); ////// chỗ này có vấn đề xíu, khi nào rảnh ngồi debug lại
             if (txt.Text == "")
+            {
+                if (isOpeningFile == true)
+                {
+                    isSaved = false;
+                }
                 this.Text = textFileName + textTitleNameNotStar;
+            }
             else
+            {
+                isSaved = true;
                 this.Text = textFileName + textTitleName;
+            }
 
             // count how many line & column
             ln = txt.Lines.Length;
