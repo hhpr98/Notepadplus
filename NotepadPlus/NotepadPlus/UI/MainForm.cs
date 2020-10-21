@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,7 +17,10 @@ namespace NotepadPlus
         private TextBox txt;
         private Panel pn;
         private Label lbLn, lbCol, lblFont;
-        private bool isSaved = false;
+        private bool isSaved = true;
+        private string textFileName = "Chưa có tên file";
+        private const string textTitleName = "* - Notepad Plus v1.0";
+        private const string textTitleNameNotStar = " - Notepad Plus v1.0";
         private int ln = 1;
         private int col = 1;
 
@@ -47,7 +51,7 @@ namespace NotepadPlus
             lbLn = new Label();
             lbLn.Text = "Ln : " + ln.ToString();
             lbLn.Font = new Font("Arial", 11F, FontStyle.Regular);
-            lbLn.Location = new Point(sz1-150,5); // location theo panel
+            lbLn.Location = new Point(sz1 - 150, 5); // location theo panel
             lbLn.Size = new Size(50, 25);
             pn.Controls.Add(lbLn);
 
@@ -75,6 +79,13 @@ namespace NotepadPlus
         #region event
         private void Txt_TextChanged(object sender, EventArgs e)
         {
+            // is Save changed
+            isSaved = (isSaved == true ? false : true); ////// chỗ này có vấn đề xíu, khi nào rảnh ngồi debug lại
+            if (txt.Text == "")
+                this.Text = textFileName + textTitleNameNotStar;
+            else
+                this.Text = textFileName + textTitleName;
+
             // count how many line & column
             ln = txt.Lines.Length;
             if (ln == 0)
@@ -82,7 +93,7 @@ namespace NotepadPlus
                 setLineColText(1, 1);
                 return;
             }
-            col = txt.Lines[ln-1].Length + 1;
+            col = txt.Lines[ln - 1].Length + 1;
             setLineColText(ln, col);
         }
 
@@ -100,17 +111,129 @@ namespace NotepadPlus
         #endregion
 
         #region function
-        private void setLineColText(int line,int column)
+        private void setLineColText(int line, int column)
         {
             lbLn.Text = "Ln : " + line.ToString();
             lbCol.Text = "Col : " + column.ToString();
         }
+
+        private string getNameFileFromUrl(string url)
+        {
+            var crt = @"\";
+            var idx = url.LastIndexOf(crt);
+            if (idx == -1)
+            {
+                return "";
+            }
+            else
+            {
+                return url.Substring(idx + 1, url.Length - idx - 1);
+            }
+        }
         #endregion
 
         #region Tùy chọn
-        private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
+        private void fileMớiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isSaved == false)
+            {
+                var btn = MessageBoxButtons.YesNoCancel;
+                var img = MessageBoxIcon.Question;
+                var title = "Thông báo";
+                var msg = "Bạn muốn lưu lại file?";
+                var res = MessageBox.Show(msg, title, btn, img);
+                if (res == DialogResult.Yes) // save
+                {
+                    lưuToolStripMenuItem_Click(sender, e);
+                    textFileName = "Chưa có tên file";
+                    this.Text = textFileName + textTitleNameNotStar;
+                    this.setLineColText(1, 1);
+                    txt.Text = "";
+                }
+                else if (res == DialogResult.No) // don't save
+                {
+                    textFileName = "Chưa có tên file";
+                    this.Text = textFileName + textTitleNameNotStar;
+                    this.setLineColText(1, 1);
+                    txt.Text = "";
+                }
+                else // Cancel
+                {
+                    // nothing
+                }
+            }
+            else
+            {
+                textFileName = "Chưa có tên file";
+                this.Text = textFileName + textTitleNameNotStar;
+                this.setLineColText(1, 1);
+                txt.Text = "";
+            }
+        }
+
+        private void cửaSổMớiToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void mởToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void lưuToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath + @"\";
+            saveFileDialog.Title = "Lưu file";
+            saveFileDialog.CheckFileExists = false;
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.DefaultExt = "txt";
+            saveFileDialog.Filter = "Text File (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, txt.Text);
+                textFileName = getNameFileFromUrl(saveFileDialog.FileName);
+                this.Text = textFileName + textTitleNameNotStar;
+                MessageBox.Show("Lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            // update status file saved
+            isSaved = true;
+        }
+
+        private void lưuDướiDạngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void pageSetupToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void inToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (isSaved == false)
+            {
+                var btn = MessageBoxButtons.YesNoCancel;
+                var img = MessageBoxIcon.Question;
+                var title = "Thông báo";
+                var msg = "Bạn muốn lưu lại file?";
+                var res = MessageBox.Show(msg, title, btn, img);
+                if (res == DialogResult.Yes) // save
+                {
+                    lưuToolStripMenuItem_Click(sender, e);
+                }
+                isSaved = true;
+            }
+            this.Close();
         }
         #endregion
 
