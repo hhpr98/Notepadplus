@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Printing;
 using System.IO;
@@ -191,7 +192,16 @@ namespace NotepadPlus
 
         private void cửaSổMớiToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            Process process = new Process();
+            ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.FileName = @"NotepadPlus.exe";
+            //startInfo.Arguments = ArgumentsForMyExe;
+            process.StartInfo = startInfo;
+            process.Start();
+            process.WaitForExit(); // This is the line which answers my question :) 
 
+            //MainForm frm = new MainForm();
+            //frm.ShowDialog();
         }
 
         private void mởToolStripMenuItem_Click(object sender, EventArgs e)
