@@ -164,17 +164,11 @@ namespace NotepadPlus
                 if (res == DialogResult.Yes) // save
                 {
                     lưuToolStripMenuItem_Click(sender, e);
-                    textFileName = "Chưa có tên file";
-                    this.Text = textFileName + textTitleNameNotStar;
-                    this.setLineColText(1, 1);
-                    txt.Text = "";
+                    resetFileNameAndEmptyFile();
                 }
                 else if (res == DialogResult.No) // don't save
                 {
-                    textFileName = "Chưa có tên file";
-                    this.Text = textFileName + textTitleNameNotStar;
-                    this.setLineColText(1, 1);
-                    txt.Text = "";
+                    resetFileNameAndEmptyFile();
                 }
                 else // Cancel
                 {
@@ -183,11 +177,16 @@ namespace NotepadPlus
             }
             else
             {
-                textFileName = "Chưa có tên file";
-                this.Text = textFileName + textTitleNameNotStar;
-                this.setLineColText(1, 1);
-                txt.Text = "";
+                resetFileNameAndEmptyFile();
             }
+        }
+
+        private void resetFileNameAndEmptyFile()
+        {
+            textFileName = "Chưa có tên file";
+            this.Text = textFileName + textTitleNameNotStar;
+            this.setLineColText(1, 1);
+            txt.Text = "";
         }
 
         private void cửaSổMớiToolStripMenuItem_Click(object sender, EventArgs e)
@@ -226,6 +225,8 @@ namespace NotepadPlus
                 textFileName = getNameFileFromUrl(saveFileDialog.FileName);
                 this.Text = textFileName + textTitleNameNotStar;
                 MessageBox.Show("Lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                textFileName = getNameFileFromUrl(saveFileDialog.FileName);
+                this.Text = textFileName + textTitleNameNotStar;
             }
             // update status file saved
             isSaved = true;
