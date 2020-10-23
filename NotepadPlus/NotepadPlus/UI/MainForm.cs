@@ -260,6 +260,66 @@ namespace NotepadPlus
         #endregion
 
         #region Chỉnh sửa
+        private void hoànTácToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void cắtToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void saoChépToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void dánToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void xóaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tìmVớiGoogleToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tìmToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tìmKếTiếpToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tìmỞTrướcToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void thayThếToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void điTớiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void chọnTấtCảToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+        }
+
         #endregion
 
         #region Định dạng
