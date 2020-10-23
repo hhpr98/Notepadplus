@@ -205,7 +205,31 @@ namespace NotepadPlus
 
         private void mởToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            if (isSaved == false)
+            {
+                var btn = MessageBoxButtons.YesNoCancel;
+                var img = MessageBoxIcon.Question;
+                var title = "Thông báo";
+                var msg = "Bạn muốn lưu lại file?";
+                var res = MessageBox.Show(msg, title, btn, img);
+                if (res == DialogResult.Yes) // save
+                {
+                    lưuToolStripMenuItem_Click(sender, e);
+                    resetFileNameAndEmptyFile();
+                }
+                else if (res == DialogResult.No) // don't save
+                {
+                    resetFileNameAndEmptyFile();
+                }
+                else // Cancel
+                {
+                    // nothing
+                }
+            }
+            else
+            {
+                resetFileNameAndEmptyFile();
+            }
         }
 
         private void lưuToolStripMenuItem_Click(object sender, EventArgs e)
@@ -216,7 +240,7 @@ namespace NotepadPlus
             saveFileDialog.CheckFileExists = false;
             saveFileDialog.CheckPathExists = true;
             saveFileDialog.DefaultExt = "txt";
-            saveFileDialog.Filter = "Text File (*.txt)|*.txt|All files (*.*)|*.*";
+            saveFileDialog.Filter = "Text File (*.txt)|*.txt|NotepadPlus File (*.npp)|*.npp";
             saveFileDialog.FilterIndex = 1;
             saveFileDialog.RestoreDirectory = true;
             if (saveFileDialog.ShowDialog() == DialogResult.OK)
@@ -234,7 +258,26 @@ namespace NotepadPlus
 
         private void lưuDướiDạngToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.InitialDirectory = Application.StartupPath + @"\";
+            saveFileDialog.Title = "Lưu file";
+            saveFileDialog.CheckFileExists = false;
+            saveFileDialog.CheckPathExists = true;
+            saveFileDialog.DefaultExt = "txt";
+            saveFileDialog.Filter = "Text File (*.txt)|*.txt|NotepadPlus File (*.npp)|*.npp|All files (*.*)|*.*";
+            saveFileDialog.FilterIndex = 1;
+            saveFileDialog.RestoreDirectory = true;
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                File.WriteAllText(saveFileDialog.FileName, txt.Text);
+                textFileName = getNameFileFromUrl(saveFileDialog.FileName);
+                this.Text = textFileName + textTitleNameNotStar;
+                MessageBox.Show("Lưu thành công!", "Thông báo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                textFileName = getNameFileFromUrl(saveFileDialog.FileName);
+                this.Text = textFileName + textTitleNameNotStar;
+            }
+            // update status file saved
+            isSaved = true;
         }
 
         private void pageSetupToolStripMenuItem_Click(object sender, EventArgs e)
