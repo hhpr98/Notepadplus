@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Drawing.Printing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,6 +25,8 @@ namespace NotepadPlus
         private const string textTitleNameNotStar = " - Notepad Plus v1.0";
         private int ln = 1;
         private int col = 1;
+        PrintDocument printDocument = new PrintDocument();
+        PrintDialog printDialog = new PrintDialog();
 
         public MainForm()
         {
@@ -73,6 +76,12 @@ namespace NotepadPlus
             // add event
             this.SizeChanged += MainForm_SizeChanged;
             txt.TextChanged += Txt_TextChanged;
+            printDocument.PrintPage += PrintDocument_PrintPage;
+        }
+
+        private void PrintDocument_PrintPage(object sender, PrintPageEventArgs e)
+        {
+            e.Graphics.DrawString(txt.Text, new Font("Arial", 20, FontStyle.Regular), Brushes.Black, 20, 20);
         }
 
         #endregion
@@ -224,7 +233,11 @@ namespace NotepadPlus
 
         private void inToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            printDialog.Document = printDocument;
+            if (printDialog.ShowDialog() == DialogResult.OK)
+            {
+                printDocument.Print();
+            }
         }
 
         private void thoátToolStripMenuItem_Click(object sender, EventArgs e)
