@@ -215,11 +215,11 @@ namespace NotepadPlus
                 if (res == DialogResult.Yes) // save
                 {
                     lưuToolStripMenuItem_Click(sender, e);
-                    resetFileNameAndEmptyFile();
+                    openFileAction();
                 }
                 else if (res == DialogResult.No) // don't save
                 {
-                    resetFileNameAndEmptyFile();
+                    openFileAction();
                 }
                 else // Cancel
                 {
@@ -228,7 +228,38 @@ namespace NotepadPlus
             }
             else
             {
-                resetFileNameAndEmptyFile();
+                openFileAction();
+            }
+        }
+
+        private void openFileAction()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Title = "Mở file";
+            openFileDialog.Filter = "Text File (*.txt)|*.txt|NotepadPlus File (*.npp)|*.npp|All files (*.*)|*.*";
+            openFileDialog.InitialDirectory = Application.StartupPath;
+            if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                //MessageBox.Show(openFileDialog.FileName.ToString());
+                try
+                {
+                    string filename = openFileDialog.FileName;
+                    string[] filelines = File.ReadAllLines(filename);
+                    txt.Text = "";
+                    foreach (var eachline in filelines)
+                    {
+                        txt.AppendText(eachline);
+                        txt.AppendText("\r\n");
+                    }
+                    textFileName = getNameFileFromUrl(filename);
+                    this.Text = textFileName + textTitleNameNotStar;
+                    isSaved = true;
+
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Lỗi khi mở file", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
